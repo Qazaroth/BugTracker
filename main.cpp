@@ -113,7 +113,7 @@ int main()
 
 		std::string title;
 		std::string description;
-		std::string type;
+		std::string bugType;
 
 		int priority, status;
 
@@ -122,31 +122,72 @@ int main()
 		case 1:
 			system("cls");
 			print(separator);
-			print("Title of bug? (No spaces allowed!)");
+			print("Title of bug: (Replace spaces with \"_\")");
 			print(separator);
 			std::cin >> title;
+			std::replace(title.begin(), title.end(), '_', ' ');
 			bug.setTitle(title);
 
+			system("cls");
 			print(separator);
-			print("Description of bug: (No spaces allowed!)");
+			print("Description of bug: (Replace spaces with \"_\")");
 			print(separator);
 			std::cin >> description;
+			std::replace(description.begin(), description.end(), '_', ' ');
 			bug.setDescription(description);
-			bug.setPriority("HIGH");
+
+			system("cls");
+			print(separator);
+			print("Priority of bug: (Numbers only!)");
+			print(separator);
+			print("1 - High");
+			print("2 - Medium");
+			print("3 - Low");
+			print(separator);
+			std::cin >> priority;
+
+			switch (priority)
+			{
+			case 1:
+				print("Set bug priority to high!");
+				bug.setPriority(BugPriority::HIGH);
+				break;
+			case 2:
+				print("Set bug priority to medium!");
+				bug.setPriority(BugPriority::MEDIUM);
+				break;
+			case 3:
+				print("Set bug priority to low!");
+				bug.setPriority(BugPriority::LOW);
+				break;
+			default:
+				print("Set bug priority to default (Medium)!");
+				bug.setPriority(BugPriority::MEDIUM);
+				break;
+			}
 			bug.setStatus(BugStatus::UNASSIGNED);
-			bug.setType("Input");
+
+			system("cls");
+			print(separator);
+			print("Type of bug: (Replace spaces with \"_\")");
+			print(separator);
+			std::cin >> bugType;
+			std::replace(bugType.begin(), bugType.end(), '_', ' ');
+			bug.setType(bugType);
 		
 			system("cls");
 			latestId++;
 
 			print(separator);
-			print("Creating a new bug with specified data:");
+			print("Creating a new bug report with specified data:");
 			print(separator);
 			print("Title: " << bug.getTitle());
 			print("Description: " << bug.getDescription());
 			print("Priority: " << bug.getPriority());
 			print("Status: " << bug.getStatus());
 			print("Type: " << bug.getType());
+			print(separator);
+			//print("Are you sure you want to create a new bug report with the above data? (Y/N)");
 			createBugFile(latestId, bug);
 			system("pause");
 			break;
