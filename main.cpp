@@ -115,6 +115,8 @@ int main()
 		std::string description;
 		std::string bugType;
 
+		char confirm;
+
 		int priority, status;
 
 		switch (choice)
@@ -187,8 +189,20 @@ int main()
 			print("Status: " << bug.getStatus());
 			print("Type: " << bug.getType());
 			print(separator);
-			//print("Are you sure you want to create a new bug report with the above data? (Y/N)");
-			createBugFile(latestId, bug);
+			print("Are you sure you want to create a new bug report with the above data? (Y/N)");
+			std::cin >> confirm;
+
+			if (confirm == 'y' || confirm == 'Y')
+			{
+				print(separator);
+				createBugFile(latestId, bug);
+				print("Created a new bug report with data specified above!");
+			}
+			else
+			{
+				print("Restarting the bug report process...");
+			}
+			
 			system("pause");
 			break;
 		case 4:
