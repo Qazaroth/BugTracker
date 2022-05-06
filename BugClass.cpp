@@ -1,4 +1,3 @@
-#ifndef BUGCLASS_DEFINED
 #include "BugClass.h"
 
 #include <algorithm>
@@ -97,4 +96,3 @@ void Bug::setStatus(std::string status)
 		this->_status = BugStatus::UPDATED;
 	}
 }
-#endif

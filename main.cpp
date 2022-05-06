@@ -10,50 +10,15 @@
 #include <format>
 
 #include "BugClass.h"
+#include "FileHandler.h"
+#include "Logging.h"
 
-#define print(x) std::cout << x << std::endl
+
 #define separator "***************"
 
-#define bugIDsFile "bugIds.txt"
+#define bugIDsFile "bugIds"
 #define bugFolder "bugs"
-#define templateFile "bugs/templateBug.txt"
-
-inline bool path_exists(const std::string &name) {
-	struct stat buffer;
-	return (stat(name.c_str(), &buffer) == 0);
-}
-
-std::string readFile(const std::string &name)
-{
-	using namespace std;
-
-	string data;
-
-	if (path_exists(name))
-	{
-		fstream file(name, ios::in);
-
-		while (!file.eof())
-		{
-			file >> data;
-		}
-	}
-
-	return data;
-}
-
-void createFile(const std::string &name, const std::string data)
-{
-	using namespace std;
-
-	string fileName = name + ".txt";
-	ofstream file(fileName);
-
-	if (file.good()) file << data;
-	else print("Error occured while opening file \"" << name << "\"!");
-
-	file.close();
-}
+#define templateFile "bugs/templateBug"
 
 void createTemplateFile()
 {
@@ -75,9 +40,8 @@ void createBugFile(int id, Bug bug)
 	createFile(fileName, data);
 }
 
-int main()
+void init()
 {
-	
 	if (!path_exists(bugIDsFile))
 		createFile(bugIDsFile, "0");
 
@@ -88,6 +52,11 @@ int main()
 
 	if (!fs::is_directory(bugFolder) || !fs::exists(bugFolder))
 		fs::create_directory(bugFolder);
+}
+
+int main()
+{
+	init();
 
 	int latestId = std::stoi(readFile(bugIDsFile));
 	bool endProgram = false;
@@ -192,16 +161,14 @@ int main()
 			print("Are you sure you want to create a new bug report with the above data? (Y/N)");
 			std::cin >> confirm;
 
+			print(separator);
 			if (confirm == 'y' || confirm == 'Y')
 			{
-				print(separator);
 				createBugFile(latestId, bug);
 				print("Created a new bug report with data specified above!");
 			}
 			else
-			{
 				print("Restarting the bug report process...");
-			}
 			
 			system("pause");
 			break;
